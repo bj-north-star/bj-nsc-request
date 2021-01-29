@@ -88,7 +88,12 @@ ajax.interceptors.request.use(function (config) {
       : isEmptyObj(config.data)
       ? {}
       : config.data;
-  const params = { url: newUrl, ...interceptorsHeaders, ...optData };
+  const params = { url: newUrl, ...interceptorsHeaders };
+  if (Array.isArray(optData)) {
+    Object.assign(params, { data: optData });
+  } else {
+    Object.assign(params, optData);
+  }
   const sortParam = jsonSort(params, config.method);
   const stringParam = JSON.stringify(sortParam);
   // console.log("加密前: ", stringParam);
